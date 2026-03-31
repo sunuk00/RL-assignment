@@ -9,6 +9,7 @@ And our goal is to compare the performance of three action selection strategies:
 
 ## Incremental Update of Action Value Estimation
 The action value estimation is updated incrementally using the formula:
+
 $$Q_{n+1}(a) = Q_n(a) + \frac{1}{N(a)}(R - Q_n(a))$$
 
 Where:
