@@ -105,16 +105,46 @@ def opt_init(env, n, epsilon, init_value): # (bandit environment, the number of 
 # =====================================================================
 # Training of optimistic initial value (with epsilon=0.0 and init_value=10)
 # =====================================================================
-A_OPT = [] # eps=0, greedy, optimistic
+A_OPT_init10 = [] # eps=0, greedy, optimistic (init=10)
 
 for i in range(1, n_exp+1):
   Q, hist_A  = opt_init(env, n=n_trials, epsilon=0, init_value = 10)
-  A_OPT.append(hist_A)
+  A_OPT_init10.append(hist_A)
 
   if i % 100 == 0 and i > 0:
     print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
 
-A_OPT = np.array(A_OPT)
+A_OPT_init10 = np.array(A_OPT_init10)
+
+
+# =====================================================================
+# Training of optimistic initial value (with epsilon=0.0 and init_value=5)
+# =====================================================================
+A_OPT_init5 = [] # eps=0, greedy, optimistic (init=5)
+
+for i in range(1, n_exp+1):
+  Q, hist_A  = opt_init(env, n=n_trials, epsilon=0, init_value = 5)
+  A_OPT_init5.append(hist_A)
+
+  if i % 100 == 0 and i > 0:
+    print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
+
+A_OPT_init5 = np.array(A_OPT_init5)
+
+
+# =====================================================================
+# Training of optimistic initial value (with epsilon=0.1 and init_value=10)
+# =====================================================================
+A_OPT_eps01 = [] # eps=0.1, optimistic
+
+for i in range(1, n_exp+1):
+  Q, hist_A  = opt_init(env, n=n_trials, epsilon=0.1, init_value = 10)
+  A_OPT_eps01.append(hist_A)
+
+  if i % 100 == 0 and i > 0:
+    print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
+
+A_OPT_eps01 = np.array(A_OPT_eps01)
 
 
 # =====================================================================
@@ -131,16 +161,17 @@ def upper_confidence_bound(env, n, c_UCB): #(bandit environment, number of trial
   #iteration
   for i in range(n):
       #upper confidence bound
-      UCB = c_UCB*np.sqrt(np.log(n)/N)
-      A = argmax(Q+UCB)
+      UCB = c_UCB * np.sqrt(np.log(i + 1) / N) # [a1, a2, a3, a4, a5] : UCB for each action
+      A = argmax(Q + UCB)
       R = env.reward(A)
 
       N[A] += 1
       #undo N treatment if it avoids zero
       if N[A] == 1.00001:
           N[A] -= 0.00001
+
       #incremental implementation
-      Q[A] += (1/N[A]) * (R - Q[A])
+      Q[A] += (1 / N[A]) * (R - Q[A])
       #save the current action
       hist_A.append(A)
 
@@ -150,16 +181,31 @@ def upper_confidence_bound(env, n, c_UCB): #(bandit environment, number of trial
 # =====================================================================
 # Training of upper confidence bound (with c=2)
 # =====================================================================
-A_UCB = []     # upper-confidence-bound
+A_UCB_c2 = []     # upper-confidence-bound
 
 for i in range(1, n_exp+1):
   Q, hist_A = upper_confidence_bound(env, n=n_trials, c_UCB = 2)
-  A_UCB.append(hist_A)
+  A_UCB_c2.append(hist_A)
 
   if i % 100 == 0 and i > 0:
     print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
 
-A_UCB = np.array(A_UCB)
+A_UCB_c2 = np.array(A_UCB_c2)
+
+
+# =====================================================================
+# Training of upper confidence bound (with c=4)
+# =====================================================================
+A_UCB_c4 = []     # upper-confidence-bound (c=4)
+
+for i in range(1, n_exp+1):
+  Q, hist_A = upper_confidence_bound(env, n=n_trials, c_UCB = 4)
+  A_UCB_c4.append(hist_A)
+
+  if i % 100 == 0 and i > 0:
+    print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
+
+A_UCB_c4 = np.array(A_UCB_c4)
 
 
 # =====================================================================
@@ -169,17 +215,26 @@ max_A = argmax(env.q)
 
 # Calculate boolean arrays indicating if the optimal action was selected
 is_optimal_EGreedy = (A_EGreedy == max_A)
-is_optimal_OPT = (A_OPT == max_A)
-is_optimal_UCB = (A_UCB == max_A)
+is_optimal_OPT_init10 = (A_OPT_init10 == max_A)
+is_optimal_OPT_init5 = (A_OPT_init5 == max_A)
+is_optimal_OPT_eps01 = (A_OPT_eps01 == max_A)
+is_optimal_UCB_c2 = (A_UCB_c2 == max_A)
+is_optimal_UCB_c4 = (A_UCB_c4 == max_A)
 
 # Compute the average optimal action selection probability over experiments
 mean_optimal_prob_EGreedy = np.average(is_optimal_EGreedy, axis=0)
-mean_optimal_prob_OPT = np.average(is_optimal_OPT, axis=0)
-mean_optimal_prob_UCB = np.average(is_optimal_UCB, axis=0)
+mean_optimal_prob_OPT_init10 = np.average(is_optimal_OPT_init10, axis=0)
+mean_optimal_prob_OPT_init5 = np.average(is_optimal_OPT_init5, axis=0)
+mean_optimal_prob_OPT_eps01 = np.average(is_optimal_OPT_eps01, axis=0)
+mean_optimal_prob_UCB_c2 = np.average(is_optimal_UCB_c2, axis=0)
+mean_optimal_prob_UCB_c4 = np.average(is_optimal_UCB_c4, axis=0)
 
 print(mean_optimal_prob_EGreedy)
-print(mean_optimal_prob_OPT)
-print(mean_optimal_prob_UCB)
+print(mean_optimal_prob_OPT_init10)
+print(mean_optimal_prob_OPT_init5)
+print(mean_optimal_prob_OPT_eps01)
+print(mean_optimal_prob_UCB_c2)
+print(mean_optimal_prob_UCB_c4)
 
 
 # =====================================================================
@@ -187,8 +242,11 @@ print(mean_optimal_prob_UCB)
 # =====================================================================
 plt.figure(figsize=(12, 8))
 plt.plot(mean_optimal_prob_EGreedy, color='green', label='epsilon-greedy (epsilon=0.1)')
-plt.plot(mean_optimal_prob_OPT, color='red', label='optimistic initial value (epsilon=0.0)')
-plt.plot(mean_optimal_prob_UCB, color='blue', label='UCB (c=2)')
+plt.plot(mean_optimal_prob_OPT_init10, color='red', label='optimistic initial value (epsilon=0.0, init=10)')
+plt.plot(mean_optimal_prob_OPT_init5, color='brown', label='optimistic initial value (epsilon=0.0, init=5)')
+plt.plot(mean_optimal_prob_OPT_eps01, color='orange', label='optimistic initial value (epsilon=0.1, init=10)')
+plt.plot(mean_optimal_prob_UCB_c2, color='blue', label='UCB (c=2)')
+plt.plot(mean_optimal_prob_UCB_c4, color='purple', label='UCB (c=4)')
 
 plt.xlabel('Steps')
 plt.ylabel('Optimal action selection probability')
