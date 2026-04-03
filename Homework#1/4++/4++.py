@@ -1,6 +1,5 @@
 import numpy as np
 
-#4(a): 20 pts
 class Cardgame:
   def __init__(self, alpha):
     '''
@@ -70,24 +69,14 @@ class Cardgame:
     return next_state, reward, done
 
 
-#4(b)
-'''
-define the equiprobable random policy (5 pts)
-'''
 def equiprobable_random_policy(env):    
   return np.random.choice(env.action_space, p=[0.5, 0.5]) #equiprobable random action selection
 
 
-def equiprobable_policy_prob(action):
-  if action in ['draw', 'stop']:
-    return 0.5
-  return 0.0
-
-
-def bellman_policy_evaluation(env, gamma=1.0, theta=1e-10):
+def bellman_policy_evaluation(env, policy, gamma=1.0, theta=1e-10):
   """
   Iterative policy evaluation for v_pi(s) using Bellman expectation equation.
-  Policy: equiprobable random policy over {'draw', 'stop'}.
+  Policy is a state-to-action mapping.
   """
   V = {s: 0.0 for s in env.non_terminal_states}
 
@@ -96,18 +85,13 @@ def bellman_policy_evaluation(env, gamma=1.0, theta=1e-10):
 
     for s in env.non_terminal_states:
       old_v = V[s]
+      action = policy[s]
+      transitions = env.transition_model(s, action)
+
       new_v = 0.0
-
-      for action in env.action_space:
-        pi_a = equiprobable_policy_prob(action)
-        transitions = env.transition_model(s, action)
-
-        expected_return = 0.0
-        for prob, next_state, reward, done in transitions:
-          next_v = 0.0 if done else V[next_state]
-          expected_return += prob * (reward + gamma * next_v)
-
-        new_v += pi_a * expected_return
+      for prob, next_state, reward, done in transitions:
+        next_v = 0.0 if done else V[next_state]
+        new_v += prob * (reward + gamma * next_v)
 
       V[s] = new_v
       delta = max(delta, abs(old_v - new_v))
@@ -118,9 +102,59 @@ def bellman_policy_evaluation(env, gamma=1.0, theta=1e-10):
   return V
 
 
-'''
-generate 10 episodes and print the results (interaction sequence, cumulative reward, etc.) (5 pts)
-'''
+def action_value(env, state, action, V, gamma=1.0):
+  q_value = 0.0
+  transitions = env.transition_model(state, action)
+
+  for prob, next_state, reward, done in transitions:
+    next_v = 0.0 if done else V[next_state]
+    q_value += prob * (reward + gamma * next_v)
+
+  return q_value
+
+
+def policy_iteration(env, gamma=1.0, theta=1e-10):
+  policy = {s: 'stop' for s in env.non_terminal_states}
+  iteration = 0
+
+  while True:
+    iteration += 1
+    V = bellman_policy_evaluation(env, policy, gamma=gamma, theta=theta)
+
+    new_policy = {}
+    policy_stable = True
+
+    for s in env.non_terminal_states:
+      draw_value = action_value(env, s, 'draw', V, gamma)
+      stop_value = action_value(env, s, 'stop', V, gamma)
+
+      if draw_value > stop_value:
+        best_action = 'draw'
+      else:
+        best_action = 'stop'
+
+      new_policy[s] = best_action
+
+      if best_action != policy[s]:
+        policy_stable = False
+
+    policy = new_policy
+
+    print('\nPolicy iteration step {}'.format(iteration))
+    for s in env.non_terminal_states:
+      draw_value = action_value(env, s, 'draw', V, gamma)
+      stop_value = action_value(env, s, 'stop', V, gamma)
+      print('state {} | V = {:.6f} | Q(draw) = {:.6f} | Q(stop) = {:.6f} | policy = {}'.format(
+        s, V[s], draw_value, stop_value, policy[s]
+      ))
+
+    if policy_stable:
+      break
+
+  return V, policy
+
+
+
 def main():
   alpha = 0.5 #probability of drawing a card with value 2
   env = Cardgame(alpha)
@@ -148,11 +182,16 @@ def main():
     print('Total reward for episode {}: {}'.format(i+1, total_reward))
     print('---')
 
-  # Step 2: Bellman expectation policy evaluation (for equiprobable policy)
-  V_pi = bellman_policy_evaluation(env, gamma=discount_rate)
-  print('\nBellman policy evaluation result (v_pi):')
+  # Step 2: Bellman-based policy iteration
+  V_star, optimal_policy = policy_iteration(env, gamma=discount_rate)
+
+  print('\nFinal policy iteration result:')
   for s in env.non_terminal_states:
-    print('v_pi({}) = {:.6f}'.format(s, V_pi[s]))
+    draw_q = action_value(env, s, 'draw', V_star, discount_rate)
+    stop_q = action_value(env, s, 'stop', V_star, discount_rate)
+    print('state {} -> Q(draw) = {:.6f}, Q(stop) = {:.6f}, best action = {}'.format(
+      s, draw_q, stop_q, optimal_policy[s]
+    ))
 
 
 if __name__ == "__main__":  main()

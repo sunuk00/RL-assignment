@@ -177,4 +177,4 @@ where $N(s)$ is the count of episodes visiting state $s$.
 
 >지금 이 과제에서 구현된 MDP는 equiporbable random policy를 사용했다. 즉, 행동 선택이 상태에 의존하지 않고 무작위로 이루어진다. 따라서, 에이전트는 상태의 가치를 고려하지 않고 행동을 선택한다. 이로 인해, 때때로 최적 행동이 아닌 행동을 선택할 수 있으며, 이는 에피소드 2에서 볼 수 있다. 반면에, 에피소드 10에서는 운 좋게도 최적 행동인 `stop`이 선택되어 좋은 결과를 얻었다. 이러한 결과는 에이전트가 상태 가치에 대한 정보를 활용하지 않고 행동을 선택할 때 발생할 수 있는 비합리적인 행동의 예시를 보여준다. 향후 과제에서는 이러한 데이터를 활용하여 상태 가치 추정 방법을 적용할 것이다.
 
-For extensions including value function estimation, policy evaluation, and advanced learning strategies, see [Homework #4+](../4+/).
+For extensions including value function estimation, policy evaluation, and advanced learning strategies, see [Homework #4+](../4+/) and [Homework #4++](../4++).
