@@ -116,11 +116,9 @@ mean_optimal_prob_UCB = np.average(is_optimal_UCB, axis=0)
 ```
 
 
-<div style="display: flex; justify-content: space-around; gap: 10px;">
-  <img src="Figure_1.png" alt="Experiment Results 1" width="32%">
-  <img src="Figure_2.png" alt="Experiment Results 2" width="32%">
-  <img src="Figure_3.png" alt="Experiment Results 3" width="32%">
-</div>
+<img src="Figure_1.png" alt="alt text" width="65%">
+<img src="Figure_2.png" alt="alt text" width="65%">
+<img src="Figure_3.png" alt="alt text" width="65%">
 
 보라색 선과 파란색 선은 각각 UCB에서 c=4와 c=2일 경우의 결과를 나타낸다. c=4일 경우 약 0.3 부근에서 거의 무작위 선택 수준으로 수렴하고, c=2일 경우에는 약 0.5 부근에 수렴하는 것을 볼 수 있다. 이는 c 값이 높을수록 탐험이 더 많이 이루어지기 때문이며, c=4의 경우 탐험이 너무 많아져서 최적 행동 선택 확률이 낮아지는 것을 보여준다. 반면에 c=2의 경우 비교적 최적 행동 선택 확률이 더 높게 나타난다.
 
