@@ -132,9 +132,8 @@ mean_optimal_prob_UCB = np.average(is_optimal_UCB, axis=0)
 
 
 **Results Summary:**
-- UCB with c=4 converges to around 0.3, indicating excessive exploration leading to lower optimal action selection probability.
-- UCB with c=2 converges to around 0.5, showing a better balance between exploration and exploitation.
-- Epsilon-greedy with epsilon=0.1 converges to around 0.8, demonstrating a good balance between exploration and exploitation.
-- Optimistic initial value results depend on the chosen initial value and random outcomes, so a single run is not enough to conclude that one setting is always better than another.
-- To compare optimistic initial values fairly, multiple independent runs should be averaged and then analyzed.
-- Combining optimistic initial value with epsilon-greedy can improve early exploration, but the final performance still depends on the balance between exploration and exploitation.
+- UCB with c=4 shows excessive exploration, leading to lower optimal action selection probability (~0.3).
+- UCB with c=2 achieves a better balance, converging to around 0.5.
+- Epsilon-greedy with epsilon=0.1 converges to around 0.8, indicating a good balance between exploration and exploitation.
+- Epsilon-greedy with optimistic initial value (epsilon=0.1, init=10) also converges to around 0.8, but shows a much higher optimal action selection probability in the early stages compared to epsilon-greedy alone.
+- Optimistic initial value alone (init=50 or init=10) does not show a significant long-term advantage in optimal action selection probability, suggesting that it may need to be combined with other strategies for sustained performance improvement.

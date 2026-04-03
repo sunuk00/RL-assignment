@@ -92,6 +92,25 @@ $$
 p(T_{\text{STOP}}, r(s,\text{stop}) \mid s, \text{stop}) = 1 \quad \text{for any } s
 $$
 
+```python
+# This code is implemented P(s', r | s, a) for the MDP environment
+if action == 'draw':
+    if np.random.rand() < alpha:
+        next_state = state + 2
+    else:
+        next_state = state + 1
+
+    if next_state > 5:
+        next_state = 'T_BUST'
+        reward = -1
+    else:
+        reward = 0
+
+elif action == 'stop':
+    next_state = 'T_STOP'
+    reward = r(state, 'stop')
+```
+
 where $r(s, \text{stop})$ is defined in the reward model below.
 
 ### Reward Model
@@ -117,6 +136,17 @@ $$
 $$
 
 That is, the agent selects `draw` and `stop` with equal probability, regardless of the current state.
+
+```python
+# Define the action space
+self.action_space = ['draw', 'stop']  
+
+# ...
+
+# Equiprobable random policy
+def equiprobable_random_policy(env):    
+  return np.random.choice(env.action_space, p=[0.5, 0.5]) # equiprobable random action selection
+```
 
 ## 4) Episode Results (10 runs)
 
