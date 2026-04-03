@@ -155,7 +155,66 @@ This process converts raw value estimates into actionable decisions.
 
 ---
 
-## 5) Conclusion
+## 5) Analysis of Actual Output
+
+Below is the observed policy-iteration log (with $\alpha=0.5$, $\gamma=1$), interpreted step by step.
+
+### Step 1
+
+- Initial policy is all `stop`.
+- Therefore, values start from immediate stop rewards:
+  - $V(4)=1$, $V(5)=2$, and $V(0)=V(1)=V(2)=V(3)=0$.
+- Improvement compares `draw` vs `stop`:
+  - At states 2 and 3, `draw` is already better than `stop`.
+  - At states 4 and 5, `stop` remains clearly better.
+
+Policy after step 1:
+
+$$
+\pi_1 = \{0:\text{stop}, 1:\text{stop}, 2:\text{draw}, 3:\text{draw}, 4:\text{stop}, 5:\text{stop}\}
+$$
+
+### Step 2
+
+- Policy evaluation now propagates value backward from states 4 and 5.
+- As a result, low states gain positive value via future transitions:
+  - state 0: $Q(\text{draw})=0.625 > Q(\text{stop})=0$
+  - state 1: $Q(\text{draw})=1.375 > Q(\text{stop})=0$
+- Policy improves further by switching states 0 and 1 to `draw`.
+
+Policy after step 2:
+
+$$
+\pi_2 = \{0:\text{draw}, 1:\text{draw}, 2:\text{draw}, 3:\text{draw}, 4:\text{stop}, 5:\text{stop}\}
+$$
+
+### Step 3
+
+- Re-evaluation under $\pi_2$ gives stable values:
+  - $V(0)=1.3125$, $V(1)=1.375$, $V(2)=1.25$, $V(3)=1.5$, $V(4)=1$, $V(5)=2$.
+- Greedy action check no longer changes any state action.
+- Policy is stable, so policy iteration converges.
+
+Final policy:
+
+$$
+\pi_* = \{0:\text{draw}, 1:\text{draw}, 2:\text{draw}, 3:\text{draw}, 4:\text{stop}, 5:\text{stop}\}
+$$
+
+### Why This Final Policy Makes Sense
+
+- States 4 and 5:
+  - `stop` locks in high immediate reward (1 and 2).
+  - `draw` has significant bust risk, so expected value is lower.
+- States 0 to 3:
+  - `stop` gives 0 immediately.
+  - `draw` can move the agent toward higher-value states (4 or 5), so expected return is higher.
+
+This is exactly the role of policy iteration: Bellman evaluation estimates value, and policy improvement converts those values into better decisions.
+
+---
+
+## 6) Conclusion
 
 `4++` is the point where the code moves from:
 
