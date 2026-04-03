@@ -116,22 +116,25 @@ mean_optimal_prob_UCB = np.average(is_optimal_UCB, axis=0)
 ```
 
 
-![alt text](Figure_1.png)
+<img src="Figure_1.png" alt="alt text" width="70%">
+<img src="Figure_2.png" alt="alt text" width="70%">
+<img src="Figure_3.png" alt="alt text" width="70%">
 
-보라색 선과 파란색 선은 각각 UCB에서 c=4와 c=2일 경우의 결과를 나타낸다. c=4일 경우 약 0.3 부근에서 거의 무작위 선택 수준으로 수렴하고, c=2일 경우에는 약 0.5 부근에 수렴하는 것을 볼 수 있다. 이는 c 값이 높을수록 탐험이 더 많이 이루어지기 때문이며, c=4의 경우 탐험이 너무 많아져서 최적 행동 선택 확률이 낮아지는 것을 보여준다. 반면에 c=2의 경우 최적 행동 선택 확률이 더 높게 나타난다.
+보라색 선과 파란색 선은 각각 UCB에서 c=4와 c=2일 경우의 결과를 나타낸다. c=4일 경우 약 0.3 부근에서 거의 무작위 선택 수준으로 수렴하고, c=2일 경우에는 약 0.5 부근에 수렴하는 것을 볼 수 있다. 이는 c 값이 높을수록 탐험이 더 많이 이루어지기 때문이며, c=4의 경우 탐험이 너무 많아져서 최적 행동 선택 확률이 낮아지는 것을 보여준다. 반면에 c=2의 경우 비교적 최적 행동 선택 확률이 더 높게 나타난다.
 
-초록색선은 epsilon-greedy에서 epsilon=0.1일 때의 결과를 나타낸다. 약 0.8 부근에서 수렴하는 것을 볼 수 있으며, 이는 epsilon-greedy가 탐험과 활용을 적절히 균형 있게 수행하기 때문이라고 할 수 있다.
+초록색 선은 epsilon-greedy에서 epsilon=0.1일 때의 결과를 나타낸다. 약 0.8 부근에서 수렴하는 것을 볼 수 있으며, 이는 epsilon-greedy가 탐험과 활용을 적절히 균형 있게 수행하기 때문이라고 할 수 있다.
 
-빨간색 선과 갈색 선은 각각 optimistic initial value에서 초기값이 10과 5일 때의 결과를 나타낸다. 초기값이 5인 경우 약 0.4 부근에서 수렴하는 것을 볼 수 있으며, 초기값이 10인 경우 약 0.35 부근에서 수렴하는 것을 볼 수 있다. 이는 초기값이 높을수록 탐험이 더 많이 이루어지기 때문이며, 초기값이 10인 경우 탐험이 더 많아져서 최적 행동 선택 확률이 낮아지는 것을 보여준다. 반면에 초기값이 5인 경우 최적 행동 선택 확률이 더 높게 나타난다.
+노란색 선은 epsilon-greedy에서 epsilon=0.1에 추가로 초기값이 10일 때의 결과를 나타낸다. 약 0.8 부근에서 수렴하는 것을 볼 수 있다. 낙관적 초기값(Optimistic Initial Value)과  epsilon-greedy 기법을 병행했을 경우, 초반 구간(약 0.5 부근까지)에서  epsilon-greedy만 사용했을 때보다 최적 행동 선택 확률이 월등히 높은 것을 볼 수 있다. 이후 최종적인 수렴 수치는 비슷해지지만, 초기 탐색 속도와 효율성 면에서 낙관적 초기값이 긍정적인 시너지 효과를 낸다는 것을 알 수 있다.
 
-주황색 선은 optimistic initial value에서 epsilon=0.1과 초기값이 10일 때의 결과를 나타낸다. 약 0.8 부근에서 수렴하는 것을 볼 수 있다. optimistic initial value는 극초반에 강제로 탐험이 많이 이루어지면서 최적 행동 선택 확률이 낮아지는 경향이 있지만, epsilon-greedy와 결합하여 보상이 높은 행동을 빠르게 학습할 수 있도록 도와주기 때문에 최적 행동 선택 확률이 높아지는 것을 보여준다.
+빨간색 선과 갈색 선은 각각 낙관적 초기값 방법에서 초기값이 50과 10일 때의 결과를 나타낸다. 여러 번 시행을 해본 결과, 어떨 때는 빨간색이 더 높고 어떨 때는 갈색이 더 높으며 서로 비슷하게 움직이기도 한다. 이 결과를 바탕으로 단순히 낙관적 초기값만으로는 장기적인 최적 행동 선택 확률에 결정적인 영향을 주지 않는 것으로 보인다. 이는 초기 탐색이 끝난 후, 변화하는 가치 추정치를 지속적으로 업데이트하고 탐색을 유지할 별도의 방법(UCB, psilon-greedy등)이 부족하기 때문으로 보인다.
 
-결론적으로 UCB는 c 값이 너무 높으면 탐험이 과도하게 이루어져 최적 행동 선택 확률이 낮아질 수 있지만, 적절한 c 값을 선택하면 최적 행동 선택 확률이 높아질 수 있다. epsilon-greedy는 탐험과 활용을 균형 있게 수행하여 최적 행동 선택 확률이 높게 나타난다. optimistic initial value는 초기값이 너무 높으면 탐험이 과도하게 이루어져 최적 행동 선택 확률이 낮아질 수 있지만, 적절한 초기값과 epsilon 값을 선택하면 최적 행동 선택 확률이 높아질 수 있다.
+결론적으로, UCB는 c 값에 따라 탐색의 강도가 민감하게 변하며,  epsilon-greedy는 안정적인 수렴 성능을 보여주었다. 특히 낙관적 초기값은 학습 초기 단계에서 탐색을 강력하게 유도하여 성능 향상을 돕지만, 단독으로 사용되기보다는  epsilon-greedy와 같은 전략과 결합했을 때 가장 효율적인 학습 곡선을 그려낸다는 점을 알 수 있었다.
+
 
 **Results Summary:**
 - UCB with c=4 converges to around 0.3, indicating excessive exploration leading to lower optimal action selection probability.
 - UCB with c=2 converges to around 0.5, showing a better balance between exploration and exploitation.
 - Epsilon-greedy with epsilon=0.1 converges to around 0.8, demonstrating a good balance between exploration and exploitation.
-- Optimistic initial value with init=10 converges to around 0.35, indicating excessive exploration due to high initial values.
-- Optimistic initial value with init=5 converges to around 0.4, showing a better balance between exploration and exploitation compared to init=10.
-- Optimistic initial value with epsilon=0.1 and init=10 converges to around 0.8, demonstrating that combining optimistic initial values with epsilon-greedy can lead to higher optimal action selection probability by encouraging early exploration while still allowing for exploitation of learned values.
+- Optimistic initial value results depend on the chosen initial value and random outcomes, so a single run is not enough to conclude that one setting is always better than another.
+- To compare optimistic initial values fairly, multiple independent runs should be averaged and then analyzed.
+- Combining optimistic initial value with epsilon-greedy can improve early exploration, but the final performance still depends on the balance between exploration and exploitation.

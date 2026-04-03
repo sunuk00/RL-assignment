@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 # Environment: Online Advertisement
 #====================================================================
 class OnlineAd:
-  def __init__(self):
-    self.size = 5                                       # number of bandits
+  def __init__(self, k=5):
+    self.size = k                                       # number of bandits
     self.q =  np.array([0.3, 0.25, 0.4, 0.45, 0.35])    # true q values of each bandit
     
   def reward(self, action):
@@ -23,7 +23,7 @@ def argmax(arr):
 def epsilon_greedy(env, n, epsilon): #(bandit environment, the number of trials, epsilon)
 
   # history of the selected actions
-  hist_A = [] 
+  hist_A, hist_R = [] , []
 
   Q = np.zeros(env.size) # initial Q
   N = np.zeros(env.size) # selected times of each action
@@ -43,9 +43,10 @@ def epsilon_greedy(env, n, epsilon): #(bandit environment, the number of trials,
 
     # save the current action
     hist_A.append(A)
+    hist_R.append(R)
 
   # return the final Q and the history of selected actions
-  return Q, np.array(hist_A) 
+  return Q, np.array(hist_A), np.array(hist_R)
 
 
 # =====================================================================
@@ -62,7 +63,7 @@ n_exp = 1000
 A_EGreedy = [] #experiments of epsilon-greedy
 
 for i in range(1, n_exp+1):
-  Q, hist_A = epsilon_greedy(env, n_trials, epsilon=0.1)
+  Q, hist_A, hist_R = epsilon_greedy(env, n_trials, epsilon=0.1)
   A_EGreedy.append(hist_A)
 
 
@@ -75,10 +76,11 @@ A_EGreedy = np.array(A_EGreedy)
 # =====================================================================
 # 2. optimistic initial value (with epsilon=0.0 and init_value=10)
 # =====================================================================
-def opt_init(env, n, epsilon, init_value): # (bandit environment, the number of trials, epsilon)
+def opt_init(env, n, epsilon, init_value = 10): # (bandit environment, the number of trials, epsilon, initial value)
 
   #record the history
   hist_A = [] #history of the selected actions
+  hist_R = [] #history of the rewards
 
   Q = np.ones(env.size)*init_value #initial Q (Optimistic)
   N = np.zeros(env.size) #selected times of each action
@@ -98,8 +100,24 @@ def opt_init(env, n, epsilon, init_value): # (bandit environment, the number of 
 
     #save the current action
     hist_A.append(A)
+    hist_R.append(R)
 
-  return Q, np.array(hist_A)
+  return Q, np.array(hist_A), np.array(hist_R)
+
+
+# =====================================================================
+# Training of optimistic initial value (with epsilon=0.0 and init_value=50)
+# =====================================================================
+A_OPT_init50 = [] # eps=0, greedy, optimistic (init=50)
+
+for i in range(1, n_exp+1):
+  Q, hist_A, hist_R = opt_init(env, n=n_trials, epsilon=0, init_value = 50)
+  A_OPT_init50.append(hist_A)
+
+  if i % 100 == 0 and i > 0:
+    print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
+
+A_OPT_init50 = np.array(A_OPT_init50)
 
 
 # =====================================================================
@@ -108,7 +126,7 @@ def opt_init(env, n, epsilon, init_value): # (bandit environment, the number of 
 A_OPT_init10 = [] # eps=0, greedy, optimistic (init=10)
 
 for i in range(1, n_exp+1):
-  Q, hist_A  = opt_init(env, n=n_trials, epsilon=0, init_value = 10)
+  Q, hist_A, hist_R = opt_init(env, n=n_trials, epsilon=0, init_value = 10)
   A_OPT_init10.append(hist_A)
 
   if i % 100 == 0 and i > 0:
@@ -118,27 +136,12 @@ A_OPT_init10 = np.array(A_OPT_init10)
 
 
 # =====================================================================
-# Training of optimistic initial value (with epsilon=0.0 and init_value=5)
-# =====================================================================
-A_OPT_init5 = [] # eps=0, greedy, optimistic (init=5)
-
-for i in range(1, n_exp+1):
-  Q, hist_A  = opt_init(env, n=n_trials, epsilon=0, init_value = 5)
-  A_OPT_init5.append(hist_A)
-
-  if i % 100 == 0 and i > 0:
-    print('{}/{}'.format(i, n_exp), '[', '*'*int(i/100), '-'*int((n_exp-i)/100), ']')
-
-A_OPT_init5 = np.array(A_OPT_init5)
-
-
-# =====================================================================
 # Training of optimistic initial value (with epsilon=0.1 and init_value=10)
 # =====================================================================
 A_OPT_eps01 = [] # eps=0.1, optimistic
 
 for i in range(1, n_exp+1):
-  Q, hist_A  = opt_init(env, n=n_trials, epsilon=0.1, init_value = 10)
+  Q, hist_A, hist_R = opt_init(env, n=n_trials, epsilon=0.1, init_value = 10)
   A_OPT_eps01.append(hist_A)
 
   if i % 100 == 0 and i > 0:
@@ -152,7 +155,7 @@ A_OPT_eps01 = np.array(A_OPT_eps01)
 # =====================================================================
 def upper_confidence_bound(env, n, c_UCB): #(bandit environment, number of trials, confidence level)
   #record the history
-  hist_A = []
+  hist_A, hist_R = [], []
 
   Q = np.zeros(env.size)
   N = np.zeros(env.size)
@@ -174,8 +177,9 @@ def upper_confidence_bound(env, n, c_UCB): #(bandit environment, number of trial
       Q[A] += (1 / N[A]) * (R - Q[A])
       #save the current action
       hist_A.append(A)
+      hist_R.append(R)
 
-  return Q, np.array(hist_A)
+  return Q, np.array(hist_A), np.array(hist_R)
 
 
 # =====================================================================
@@ -184,7 +188,7 @@ def upper_confidence_bound(env, n, c_UCB): #(bandit environment, number of trial
 A_UCB_c2 = []     # upper-confidence-bound
 
 for i in range(1, n_exp+1):
-  Q, hist_A = upper_confidence_bound(env, n=n_trials, c_UCB = 2)
+  Q, hist_A, hist_R = upper_confidence_bound(env, n=n_trials, c_UCB = 2)
   A_UCB_c2.append(hist_A)
 
   if i % 100 == 0 and i > 0:
@@ -199,7 +203,7 @@ A_UCB_c2 = np.array(A_UCB_c2)
 A_UCB_c4 = []     # upper-confidence-bound (c=4)
 
 for i in range(1, n_exp+1):
-  Q, hist_A = upper_confidence_bound(env, n=n_trials, c_UCB = 4)
+  Q, hist_A, hist_R = upper_confidence_bound(env, n=n_trials, c_UCB = 4)
   A_UCB_c4.append(hist_A)
 
   if i % 100 == 0 and i > 0:
@@ -215,23 +219,23 @@ max_A = argmax(env.q)
 
 # Calculate boolean arrays indicating if the optimal action was selected
 is_optimal_EGreedy = (A_EGreedy == max_A)
+is_optimal_OPT_init50 = (A_OPT_init50 == max_A)
 is_optimal_OPT_init10 = (A_OPT_init10 == max_A)
-is_optimal_OPT_init5 = (A_OPT_init5 == max_A)
 is_optimal_OPT_eps01 = (A_OPT_eps01 == max_A)
 is_optimal_UCB_c2 = (A_UCB_c2 == max_A)
 is_optimal_UCB_c4 = (A_UCB_c4 == max_A)
 
 # Compute the average optimal action selection probability over experiments
 mean_optimal_prob_EGreedy = np.average(is_optimal_EGreedy, axis=0)
+mean_optimal_prob_OPT_init50 = np.average(is_optimal_OPT_init50, axis=0)
 mean_optimal_prob_OPT_init10 = np.average(is_optimal_OPT_init10, axis=0)
-mean_optimal_prob_OPT_init5 = np.average(is_optimal_OPT_init5, axis=0)
 mean_optimal_prob_OPT_eps01 = np.average(is_optimal_OPT_eps01, axis=0)
 mean_optimal_prob_UCB_c2 = np.average(is_optimal_UCB_c2, axis=0)
 mean_optimal_prob_UCB_c4 = np.average(is_optimal_UCB_c4, axis=0)
 
 print(mean_optimal_prob_EGreedy)
+print(mean_optimal_prob_OPT_init50)
 print(mean_optimal_prob_OPT_init10)
-print(mean_optimal_prob_OPT_init5)
 print(mean_optimal_prob_OPT_eps01)
 print(mean_optimal_prob_UCB_c2)
 print(mean_optimal_prob_UCB_c4)
@@ -242,8 +246,8 @@ print(mean_optimal_prob_UCB_c4)
 # =====================================================================
 plt.figure(figsize=(12, 8))
 plt.plot(mean_optimal_prob_EGreedy, color='green', label='epsilon-greedy (epsilon=0.1)')
-plt.plot(mean_optimal_prob_OPT_init10, color='red', label='optimistic initial value (epsilon=0.0, init=10)')
-plt.plot(mean_optimal_prob_OPT_init5, color='brown', label='optimistic initial value (epsilon=0.0, init=5)')
+plt.plot(mean_optimal_prob_OPT_init50, color='red', label='optimistic initial value (epsilon=0.0, init=50)')
+plt.plot(mean_optimal_prob_OPT_init10, color='brown', label='optimistic initial value (epsilon=0.0, init=10)')
 plt.plot(mean_optimal_prob_OPT_eps01, color='orange', label='optimistic initial value (epsilon=0.1, init=10)')
 plt.plot(mean_optimal_prob_UCB_c2, color='blue', label='UCB (c=2)')
 plt.plot(mean_optimal_prob_UCB_c4, color='purple', label='UCB (c=4)')
