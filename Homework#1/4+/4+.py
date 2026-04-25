@@ -1,6 +1,5 @@
 import numpy as np
 
-#4(a): 20 pts
 class Cardgame:
   def __init__(self, alpha):
     '''
@@ -55,14 +54,14 @@ class Cardgame:
     return self.state
 
   def step(self, action):
-    '''
-    Define the state transition (return next_state, reward, done) (15 pts)
-    (1) if draw => bust or not (10 pts)
-    (2) if stop => non-bust terminal (5 pts)
-    '''
+    
+    # Use the transition model to get the possible next states, rewards, and done flags for the given action
     transitions = self.transition_model(self.state, action)
 
+    # Sample one of the possible transitions based on their probabilities
     probs = [t[0] for t in transitions]
+
+    # 랜덤하게 다음 상태, 보상, 종료 여부를 선택 -> 확률에 따라 선택 
     idx = np.random.choice(len(transitions), p=probs)
     _, next_state, reward, done = transitions[idx]
 
@@ -70,10 +69,6 @@ class Cardgame:
     return next_state, reward, done
 
 
-#4(b)
-'''
-define the equiprobable random policy (5 pts)
-'''
 def equiprobable_random_policy(env):    
   return np.random.choice(env.action_space, p=[0.5, 0.5]) #equiprobable random action selection
 
@@ -99,6 +94,7 @@ def bellman_policy_evaluation(env, gamma=1.0, theta=1e-10):
       new_v = 0.0
 
       for action in env.action_space:
+        # π(a|s) = 0.5 for both 'draw' and 'stop' actions
         pi_a = equiprobable_policy_prob(action)
         transitions = env.transition_model(s, action)
 
@@ -118,9 +114,7 @@ def bellman_policy_evaluation(env, gamma=1.0, theta=1e-10):
   return V
 
 
-'''
-generate 10 episodes and print the results (interaction sequence, cumulative reward, etc.) (5 pts)
-'''
+
 def main():
   alpha = 0.5 #probability of drawing a card with value 2
   env = Cardgame(alpha)
