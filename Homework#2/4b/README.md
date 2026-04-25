@@ -23,9 +23,9 @@ The environment used in this homework has the following characteristics:
 - Hole states: (0, 2), (1, 0), (2, 1), (2, 3)
 - Actions: Up, Down, Left, Right
 
-The reward structure is:
-- +2 when the agent reaches the goal
-- -2 when the agent falls into a hole
+This environment is deterministic, meaning that the agent's actions will always lead to the intended outcome. The reward structure is as follows:
+- +2 for reaching the goal
+- -2 for falling into a hole
 - 0 for all other transitions
 
 epsilon is set to 0.2, meaning the agent will explore randomly 20% of the time and exploit the learned policy 80% of the time.
