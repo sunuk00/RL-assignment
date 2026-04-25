@@ -3,15 +3,14 @@ In this homework, we will implement the Bellman equation for policy evaluation. 
 
 ## Bellman Equation
 The Bellman equation for policy evaluation can be expressed as follows:
-
-$$v_{\pi}(s) =  Σ\pi(s|a)~Σ p(s', r|s, π(s))~[r(s) + γ * v_{\pi}(s')]$$
+$$ v_{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) [r + \gamma v_{\pi}(s')]$$
 
 Where:
 - $v_{\pi}(s)$ is the value of state s under policy $\pi$.
-- $r(s)$ is the reward received when in state $s$.
+- $r(s, a)$ is the reward received when taking action a in state s.
 - $γ$ is the discount factor, which determines the importance of future rewards.
-- $p(s'|s, π(s))$ is the probability of transitioning to state s' from state s under policy $\pi$.
-- $\pi(s)$ is the action taken in state s under policy $\pi$.
+- $p(s', r|s, a)$ is the probability of transitioning to state s' and receiving reward r from state s by taking action a.
+- $\pi(a|s)$ is the probability of taking action a in state s under policy $\pi$.
 
 ```python
 for action_idx, action_prob in enumerate(policy[state]):

@@ -58,7 +58,7 @@ $$A_t = \arg\max_a Q(a)$$
 Where $Q(a)$ is initialized to a high value (e.g., 10) to encourage exploration.
 
 ```python
-Q = np.zeros(env.size) * init_value # optimistic initial value
+Q = np.ones(env.size) * init_value # optimistic initial value
 N = np.zeros(env.size)         
 
 # ... Action selection and reward receiving ...
