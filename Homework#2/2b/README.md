@@ -4,8 +4,6 @@
 
 The Bellman optimality equation is a fundamental concept in reinforcement learning that describes the relationship between the optimal value of a state and the optimal values of its next states under an optimal policy.
 
-<!-- $$v_{*}(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + γ v_{*}(s')]$$ -->
-
 $$v_{\star}(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + \gamma v_{\star}(s')]$$
 
 Where:
