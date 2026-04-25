@@ -28,7 +28,7 @@ The reward structure is:
 - -2 when the agent falls into a hole
 - 0 for all other transitions
 
-<img src="Homework#2\1a\frozen_lake_env.png" alt="alt text" width="50%">
+<img src="Homework#2/1a/frozen_lake_env.png" alt="alt text" width="50%">
 
 ## Implementation
 The code is organized as follows:
