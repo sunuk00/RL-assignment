@@ -28,7 +28,7 @@ The reward structure is:
 - -2 when the agent falls into a hole
 - 0 for all other transitions
 
-<img src=".\Homework#2\1a\frozen_lake_env.png" alt="alt text" width="50%">
+<img src="Homework#2\1a\frozen_lake_env.png" alt="alt text" width="50%">
 
 ## Implementation
 The code is organized as follows:
@@ -47,6 +47,13 @@ The helper function argmax() is used to break ties randomly when multiple action
 
 ## Result
 After training, the learned policy is visualized on the grid using arrows for actions, H for holes, and G for the goal. The resulting policy shows the agent's preferred path toward the goal while avoiding dangerous states.
+
+```
+> v H v
+H > v <
+v H v H
+> > > G
+```
 
 ## Conclusion
 In this homework, we implemented Monte Carlo Control for the Frozen Lake environment. By repeatedly sampling episodes and updating action values from observed returns, the agent gradually learns a policy that improves its chance of reaching the goal successfully.
