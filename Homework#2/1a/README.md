@@ -24,7 +24,7 @@ The Frozen Lake environment is a grid world where the agent must navigate from a
 
 The agent receives a reward of +2 for reaching the goal, a reward of -2 for falling into a hole, and a reward of 0 for all other transitions. The environment is stochastic, meaning that the agent's actions may not always lead to the intended outcome.
 
-<img src="frozen_lake_env.png" alt="alt text" width="65%">
+<img src="frozen_lake_env.png" alt="alt text" width="50%">
 
 ## Implementation
 To implement the Bellman equation for policy evaluation, we will follow these steps:

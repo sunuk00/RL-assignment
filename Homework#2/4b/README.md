@@ -28,6 +28,10 @@ The reward structure is:
 - -2 when the agent falls into a hole
 - 0 for all other transitions
 
+epsilon is set to 0.2, meaning the agent will explore randomly 20% of the time and exploit the learned policy 80% of the time.
+
+$\gamma$ is set to 1.0, indicating that future rewards are not discounted and the agent values long-term returns equally to immediate rewards.
+
 <img src="frozen_lake_env.png" alt="frozen_lake_env" width="50%">
 
 ## Implementation
