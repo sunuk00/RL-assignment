@@ -4,10 +4,10 @@
 
 The Bellman optimality equation is a fundamental concept in reinforcement learning that describes the relationship between the optimal value of a state and the optimal values of its next states under an optimal policy.
 
-$$v^*(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + \gamma v^*(s')]$$
+$$v_{*}(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + \gamma v_{*}(s')]$$
 
 Where:
-- $v^*(s)$: optimal value of state $s$
+- $v_{*}(s)$: optimal value of state $s$
 - $a$: action to take in state $s$
 - $r$: reward received
 - $s'$: next state after taking action $a$
@@ -78,9 +78,9 @@ Optimal Policy (pi*):
 
 ### Optimal Value Function
 
-- **V**(Low) ≈ 5.00: The optimal value from Low state reflects conservative action (staying); climbing risk/reward ratio is unfavorable.
-- **V**(Middle) ≈ 8.24: Higher value than Low because climbing from Middle towards High has better expected return due to positive reward structure.
-- **V**(High) ≈ 10.59: Highest value; staying at High yields consistent positive reward and avoids downward risk.
+- **V*(Low) ≈ 5.00**: The optimal value from Low state reflects conservative action (staying); climbing risk/reward ratio is unfavorable.
+- **V*(Middle) ≈ 8.24**: Higher value than Low because climbing from Middle towards High has better expected return due to positive reward structure.
+- **V*(High) ≈ 10.59**: Highest value; staying at High yields consistent positive reward and avoids downward risk.
 
 ### Optimal Policy
 
