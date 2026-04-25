@@ -6,7 +6,7 @@ The Bellman optimality equation is a fundamental concept in reinforcement learni
 
 <!-- $$v_{*}(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + γ v_{*}(s')]$$ -->
 
-$$v_*(s) =\max_a \sum_{s', r} p(s', r|s, a) [r + \gamma v_*(s')]$$
+$$v_{*}(s) = \max_a \sum_{s', r} p(s', r|s, a) [r + \gamma v_{*}(s')]$$
 
 Where:
 - $v_{*}(s)$: optimal value of state $s$
