@@ -6,7 +6,7 @@ class DroneDelivery:
       #(a)-1
       self.height = 6
       self.width = 6
-      self.max_battery = 20
+      self.max_battery = 500
 
 
       #(a)-2
@@ -20,7 +20,7 @@ class DroneDelivery:
       #(a)-3
       self.obstacles = [(1,1), (1,2), (3,1), (4,3)]
       self.windy = [(0,5), (1,5), (3,2), (3,3), (3,4)]
-      self.state_space = [(x, y, b) for (x, y, b) in self.state_space if (x, y) not in self.obstacles]
+      self.state_space = [(x, y, b) for (x, y, b) in self.state_space if (x, y) not in self.obstacles] # 장애물 위치는 상태 공간에서 제외
 
       self.start_grid = (0, 0)
       self.goal_grid = (5, 5)
@@ -243,9 +243,9 @@ class DoubleQLearning:
 
 #Training & Find the optimal path of the 3 algorithms (5 pts)
 env = DroneDelivery()
-sarsa_opt_policy, _, sarsa_steps = SARSA(env).control(episodes=10000)
-ql_opt_policy,    _, ql_steps    = QLearning(env).control(episodes=10000)
-dql_opt_policy,   _, dql_steps   = DoubleQLearning(env).control(episodes=10000)
+sarsa_opt_policy, _, sarsa_steps = SARSA(env).control(episodes=50000)
+ql_opt_policy,    _, ql_steps    = QLearning(env).control(episodes=50000)
+dql_opt_policy,   _, dql_steps   = DoubleQLearning(env).control(episodes=50000)
 
 def print_optimal_path(policy, env, title=''):
     print(f'\n=== {title} Optimal Path ===')
@@ -277,7 +277,7 @@ show_dql()
 #Draw the comparison figure (5 pts)
 import matplotlib.pyplot as plt
 
-episodes = list(range(1, 10001))
+episodes = list(range(1, 50001))
 
 plt.figure(figsize=(10, 6))
 plt.plot(sarsa_steps, episodes, label='SARSA', color='blue')
