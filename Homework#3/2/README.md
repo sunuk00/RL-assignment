@@ -60,8 +60,8 @@ $$A = \{0: \text{up}, ~1: \text{down}, ~2: \text{left}, ~3: \text{right}\}$$
 **reward:** -1 for each step, -3 when the drone leaves the windy area or attempts to pass through an obstacle, -50 when the drone's battery is depleted, and +100 when the drone reaches the goal.
 
 $$ R(s, a) = \begin{cases}
--1 & \text{for each step} \\
--3 & \text{when the drone leaves the windy area or attempts to pass through an obstacle} \\
+-1 & \text{for each step or attempts to move to obstacle(but can't go)} \\
+-3 & \text{when the drone leaves the windy area} \\
 -50 & \text{when the drone's battery is depleted} \\
 \;\; +100 & \text{when the drone reaches the goal}
 \end{cases} $$
