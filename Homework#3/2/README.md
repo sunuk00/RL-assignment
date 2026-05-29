@@ -45,10 +45,80 @@ Where:
 # Drone Delivery Environment
 In this homework, we will implement a drone delivery environment.
 
-- grid size: 6x6
-- state space: (x, y, b) where x and y are the coordinates of the drone and b is the remaining battery level
-- action space: up, down, left, right
-- reward: -1 for each step, -3 when the drone leaves the windy area or tries to pass through an obstacle, -50 when the drone's battery is depleted, and +100 when the drone reaches the goal
-- Battery Level: 20
-
+**grid size: 6x6**
 ![alt text](./drone_delivery_env.png)
+
+**state space:** (x, y, b) where x and y are the coordinates of the drone and b is the remaining battery level
+
+$$(x, y, b) \quad \text{where} \quad x \in \{0, 1, 2, 3, 4, 5\}, \quad y \in \{0, 1, 2, 3, 4, 5\}, \quad b \in \{0, 1, ..., 20\}$$
+
+**action space:** up, down, left, right
+
+$$A = \{0: \text{up}, ~1: \text{down}, ~2: \text{left}, ~3: \text{right}\}$$
+
+**reward:** 1 for each step, -3 when the drone leaves the windy area and can't go through an obstacle, -50 when the drone's battery is depleted, and +100 when the drone reaches the goal.
+
+$$ R(s, a) = \begin{cases}
+-1 & \text{for each step} \\
+-3 & \text{when the drone leaves the windy area} \\
+-50 & \text{when the drone's battery is depleted} \\
++100 & \text{when the drone reaches the goal}
+\end{cases} $$
+
+**state transition:** The state transition is deterministic, meaning that the drone will always move in the intended direction unless it encounters an obstacle or leaves the windy area. The transition probabilities can be defined as follows:
+
+$$ P(s'|s, a) = \begin{cases}
+1 & \text{if the action leads to a valid state transition} \\
+0 & \text{otherwise}
+\end{cases} $$
+
+
+Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to find the optimal policy for navigating the drone from the start position to the goal while avoiding obstacles and managing battery life effectively. After training, visualize the optimal paths learned by each algorithm on the grid.
+
+```
+=== SARSA Optimal Path ===
++---+---+---+---+---+---+
+| S | . | . | . | . | W |
++---+---+---+---+---+---+
+| v | O | O | . | . | W |
++---+---+---+---+---+---+
+| > | > | v | . | . | . |
++---+---+---+---+---+---+
+| . | O | > | > | v | . |
++---+---+---+---+---+---+
+| . | . | . | O | v | . |
++---+---+---+---+---+---+
+| . | . | . | . | > | G |
++---+---+---+---+---+---+
+
+=== Q-Learning Optimal Path ===
++---+---+---+---+---+---+
+| S | . | . | . | . | W |
++---+---+---+---+---+---+
+| v | O | O | . | . | W |
++---+---+---+---+---+---+
+| > | > | v | . | . | . |
++---+---+---+---+---+---+
+| . | O | > | > | > | v |
++---+---+---+---+---+---+
+| . | . | . | O | . | v |
++---+---+---+---+---+---+
+| . | . | . | . | . | G |
++---+---+---+---+---+---+
+
+=== Double Q-Learning Optimal Path ===
+[Warning] Battery Exhausted.
++---+---+---+---+---+---+
+| S | > | > | > | > | > |
++---+---+---+---+---+---+
+| . | O | O | . | . | W |
++---+---+---+---+---+---+
+| . | . | . | . | . | . |
++---+---+---+---+---+---+
+| . | O | W | W | W | . |
++---+---+---+---+---+---+
+| . | . | . | O | . | . |
++---+---+---+---+---+---+
+| . | . | . | . | . | G |
++---+---+---+---+---+---+
+```
