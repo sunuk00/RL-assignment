@@ -45,8 +45,9 @@ Where:
 # Drone Delivery Environment
 In this homework, we will implement a drone delivery environment.
 
+
+![alt text](./drone_delivery_env.png)   
 **grid size: 6x6**
-![alt text](./drone_delivery_env.png)
 
 **state space:** (x, y, b) where x and y are the coordinates of the drone and b is the remaining battery level
 
