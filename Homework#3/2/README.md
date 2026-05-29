@@ -132,4 +132,4 @@ After training, visualize the optimal paths learned by each algorithm on the gri
 ```
 
 This is the graph of cumulative timesteps for each algorithm:   
-![alt text](1000000_b2000.png)
+![alt text](comparison.png)
