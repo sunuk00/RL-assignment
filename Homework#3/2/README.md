@@ -133,7 +133,7 @@ After training, visualize the optimal paths learned by each algorithm on the gri
 ```
 
 This is the graph of cumulative timesteps for each algorithm:   
-![alt text](comparison.png)
+![alt text](10000_b20.png)
 
 그래프는 Episode마다 누적된 Timestep을 보여준다. 즉, 각 Episode가 끝날 때 걸린 Timestep을 누적하여 나타낸 것이다. 사실 내가 기대했던 것은 Episode가 진행될 때마다 Timestep이 줄어들어, 학습이 진행될수록 최적 경로를 더 빨리 찾게 되어 그래프의 기울기가 급격히 올라가는 형태였다.
 그러나 SARSA, Q-Learning, Double Q-Learning 모두 선형적으로 증가하는 그래프를 보여주었다. 이는 각 Episode마다 걸리는 Timestep이 일정하게 유지되고 있음을 의미한다. 즉, 학습이 진행되어도 최적 경로를 찾는 데 걸리는 시간이 크게 줄어들지 않고 있다는 것을 나타낸다.
