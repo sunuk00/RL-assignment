@@ -78,6 +78,7 @@ Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to fin
 
 
 We use the following hyperparameters for training:
+
 $$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 10,000, \quad  Battery Level = 20 $$
 
 
