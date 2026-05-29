@@ -9,23 +9,18 @@ class DroneDelivery:
       self.max_battery = 20
 
 
-      #(a)-3
-      self.obstacles = [(1,1), (1,2), (3,1), (4,3)]
-      self.windy = [(0,5), (1,5), (3,2), (3,3), (3,4)]
-
-
       #(a)-2
       self.state_space =  [(x, y, b)
                     for x in range(self.height)
                     for y in range(self.width)
-                    for b in range(self.max_battery + 1)
-                    if (x, y) not in self.obstacles]
+                    for b in range(self.max_battery + 1)]
       self.action_space =  [0, 1, 2, 3]  # Up, Down, Left, Right
 
 
-    #   #(a)-3
-    #   self.obstacles = [(1,1), (1,2), (3,1), (4,3)]
-    #   self.windy = [(0,5), (1,5), (3,2), (3,3), (3,4)]
+      #(a)-3
+      self.obstacles = [(1,1), (1,2), (3,1), (4,3)]
+      self.windy = [(0,5), (1,5), (3,2), (3,3), (3,4)]
+      self.state_space = [(x, y, b) for (x, y, b) in self.state_space if (x, y) not in self.obstacles]
 
       self.start_grid = (0, 0)
       self.goal_grid = (5, 5)
@@ -50,7 +45,7 @@ class DroneDelivery:
         b -= 1
 
 
-    #(a)-6 Return the battery exhauation failure before reaching the goal
+    #(a)-6 Return the battery exhaustion failure before reaching the goal
     if b < 0:
       self.state = (x, y, 0)
       return (x, y, 0), -50, True
@@ -247,43 +242,36 @@ class DoubleQLearning:
   
 
 #Training & Find the optimal path of the 3 algorithms (5 pts)
-def print_policy(policy, env, title='', battery=None):
-    if battery is None:
-        battery = env.max_battery
-    arrows = {0: '^', 1: 'v', 2: '<', 3: '>'}
-    print(f'\n=== {title} (battery={battery}) ===')
-    print('+---+---+---+---+---+---+')
-    for x in range(env.height):
-        row = '|'
-        for y in range(env.width):
-            if (x, y) == env.start_grid:
-                cell = ' S '
-            elif (x, y) == env.goal_grid:
-                cell = ' G '
-            elif (x, y) in env.obstacles:
-                cell = ' O '
-            elif (x, y) in env.windy:
-                cell = f' {arrows[policy[(x, y, battery)]]}~'
-            else:
-                cell = f' {arrows[policy[(x, y, battery)]]} '
-            row += cell + '|'
-        print(row)
-        print('+---+---+---+---+---+---+')
-
 env = DroneDelivery()
+sarsa_opt_policy, _, sarsa_steps = SARSA(env).control(episodes=10000)
+ql_opt_policy,    _, ql_steps    = QLearning(env).control(episodes=10000)
+dql_opt_policy,   _, dql_steps   = DoubleQLearning(env).control(episodes=10000)
 
-sarsa_grid = SARSA(env)
-sarsa_opt_policy, _, sarsa_steps = sarsa_grid.control(10000)
+def print_optimal_path(policy, env, title=''):
+    print(f'\n=== {title} Optimal Path ===')
+    grid_map = [[' . ' for _ in range(env.width)] for _ in range(env.height)]
+    for ox, oy in env.obstacles: grid_map[ox][oy] = ' O '
+    for wx, wy in env.windy:     grid_map[wx][wy] = ' W '
+    grid_map[env.start_grid[0]][env.start_grid[1]] = ' S '
+    grid_map[env.goal_grid[0]][env.goal_grid[1]]   = ' G '
+    state, done, arrows = env.reset(), False, {0:' ^ ', 1:' v ', 2:' < ', 3:' > '}
+    while not done:
+        action = policy[state]; x, y, _ = state
+        if (x, y) not in (env.start_grid, env.goal_grid): grid_map[x][y] = arrows[action]
+        state, reward, done = env.step(action)
+        if reward == -50: print("[Warning] Battery Exhausted."); break
+    sep = '+---+---+---+---+---+---+'
+    print(sep)
+    for row in grid_map:
+        print('|' + '|'.join(row) + '|'); print(sep)
 
-ql_grid = QLearning(env)
-ql_opt_policy, _, ql_steps = ql_grid.control(10000)
+def show_sarsa(): print_optimal_path(sarsa_opt_policy, env, 'SARSA')
+def show_ql():    print_optimal_path(ql_opt_policy,    env, 'Q-Learning')
+def show_dql():   print_optimal_path(dql_opt_policy,   env, 'Double Q-Learning')
 
-dql_grid = DoubleQLearning(env)
-dql_opt_policy, _, dql_steps = dql_grid.control(10000)
-
-print_policy(sarsa_opt_policy, env, title='SARSA')
-print_policy(ql_opt_policy,    env, title='Q-Learning')
-print_policy(dql_opt_policy,   env, title='Double Q-Learning')
+show_sarsa()
+show_ql()
+show_dql()
 
 
 #Draw the comparison figure (5 pts)

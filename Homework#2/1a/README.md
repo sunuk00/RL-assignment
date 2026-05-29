@@ -3,6 +3,7 @@ In this homework, we will implement the Bellman equation for policy evaluation. 
 
 ## Bellman Equation
 The Bellman equation for policy evaluation can be expressed as follows:
+
 $$ v_{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) [r + \gamma v_{\pi}(s')]$$
 
 Where:
