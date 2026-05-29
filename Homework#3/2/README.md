@@ -73,8 +73,15 @@ $$ P(s'|s, a) = \begin{cases}
 0 & \text{otherwise}
 \end{cases} $$
 
+## Learning Optimal Policy
+Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to find the optimal policy for navigating the drone from the start position to the goal while avoiding obstacles and managing battery life effectively. 
 
-Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to find the optimal policy for navigating the drone from the start position to the goal while avoiding obstacles and managing battery life effectively. After training, visualize the optimal paths learned by each algorithm on the grid.
+
+We use the following hyperparameters for training:
+$$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 10,000, \quad  Battery Level = 20 $$
+
+
+After training, visualize the optimal paths learned by each algorithm on the grid.
 
 ```
 === SARSA Optimal Path ===
@@ -123,3 +130,6 @@ Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to fin
 | . | . | . | . | . | G |
 +---+---+---+---+---+---+
 ```
+
+This is the graph of cumulative timesteps for each algorithm:   
+![alt text](1000000_b2000.png)
