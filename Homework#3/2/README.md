@@ -48,10 +48,10 @@ In this homework, we will implement a drone delivery environment.
 
 ![alt text](./drone_delivery_env.png)   
 **grid(6x6):**   
-$$S: Start position (0, 0)$$   
-$$G: Goal position (5, 5)$$    
-$$O: Obstacles (1,1), (1,2), (3,1), (4,3)$$    
-$$W: Windy area (0,5), (1,5), (3,2), (3,3), (3,4)$$
+* $$S: Start position (0, 0)$$   
+* $$G: Goal position (5, 5)$$    
+* $$O: Obstacles (1,1), (1,2), (3,1), (4,3)$$    
+* $$W: Windy area (0,5), (1,5), (3,2), (3,3), (3,4)$$
 
 **state space:** (x, y, b) where x and y are the coordinates of the drone and b is the remaining battery level
 
