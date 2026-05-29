@@ -57,16 +57,16 @@ $$(x, y, b) \quad \text{where} \quad x \in \{0, 1, 2, 3, 4, 5\}, \quad y \in \{0
 
 $$A = \{0: \text{up}, ~1: \text{down}, ~2: \text{left}, ~3: \text{right}\}$$
 
-**reward:** 1 for each step, -3 when the drone leaves the windy area and can't go through an obstacle, -50 when the drone's battery is depleted, and +100 when the drone reaches the goal.
+**reward:** -1 for each step, -3 when the drone leaves the windy area or attempts to pass through an obstacle, -50 when the drone's battery is depleted, and +100 when the drone reaches the goal.
 
 $$ R(s, a) = \begin{cases}
 -1 & \text{for each step} \\
--3 & \text{when the drone leaves the windy area} \\
+-3 & \text{when the drone leaves the windy area or attempts to pass through an obstacle} \\
 -50 & \text{when the drone's battery is depleted} \\
-+100 & \text{when the drone reaches the goal}
+\;\; +100 & \text{when the drone reaches the goal}
 \end{cases} $$
 
-**state transition:** The state transition is deterministic, meaning that the drone will always move in the intended direction unless it encounters an obstacle or leaves the windy area. The transition probabilities can be defined as follows:
+**state transition:** The state transition is deterministic: actions deterministically produce the next state. If an action would result in an invalid position (for example, moving into an obstacle or outside the grid due to wind), the transition is considered invalid. The transition probabilities can be defined as follows:
 
 $$ P(s'|s, a) = \begin{cases}
 1 & \text{if the action leads to a valid state transition} \\
@@ -79,7 +79,7 @@ Train the agent using SARSA, Q-Learning, and Double Q-Learning algorithms to fin
 
 We use the following hyperparameters for training:
 
-$$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 10,000, \quad  Battery Level = 20 $$
+$$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 10{,}000, \quad \text{battery level} = 20 $$
 
 
 After training, visualize the optimal paths learned by each algorithm on the grid.
@@ -142,7 +142,7 @@ This is the graph of cumulative timesteps for each algorithm:
 
 따라서 이 결과를 바탕으로 또 한번의 실험을 진행해보았다:
 
-$$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 50,000, \quad  Battery Level = 500 $$
+$$\epsilon = 0.2, \quad \alpha = 0.01, \quad \text{episodes} = 50{,}000, \quad \text{battery level} = 500 $$
 
 ```
 === SARSA Optimal Path ===
