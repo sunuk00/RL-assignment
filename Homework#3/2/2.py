@@ -6,7 +6,7 @@ class DroneDelivery:
       #(a)-1
       self.height = 6
       self.width = 6
-      self.max_battery = 500
+      self.max_battery = 20
 
 
       #(a)-2
@@ -243,9 +243,9 @@ class DoubleQLearning:
 
 #Training & Find the optimal path of the 3 algorithms (5 pts)
 env = DroneDelivery()
-sarsa_opt_policy, _, sarsa_steps = SARSA(env).control(episodes=50000)
-ql_opt_policy,    _, ql_steps    = QLearning(env).control(episodes=50000)
-dql_opt_policy,   _, dql_steps   = DoubleQLearning(env).control(episodes=50000)
+sarsa_opt_policy, _, sarsa_steps = SARSA(env).control(episodes=10000)
+ql_opt_policy,    _, ql_steps    = QLearning(env).control(episodes=10000)
+dql_opt_policy,   _, dql_steps   = DoubleQLearning(env).control(episodes=10000)
 
 def print_optimal_path(policy, env, title=''):
     print(f'\n=== {title} Optimal Path ===')
@@ -277,7 +277,7 @@ show_dql()
 #Draw the comparison figure (5 pts)
 import matplotlib.pyplot as plt
 
-episodes = list(range(1, 50001))
+episodes = list(range(1, 10001))
 
 plt.figure(figsize=(10, 6))
 plt.plot(sarsa_steps, episodes, label='SARSA', color='blue')
