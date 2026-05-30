@@ -66,7 +66,7 @@ $$A = \{0: \text{up}, ~1: \text{down}, ~2: \text{left}, ~3: \text{right}\}$$
 $$ R(s, a) = \begin{cases}
 -1 & \text{for each step or attempts to move to obstacle(but can't go)} \\
 -50 & \text{when the drone's battery is depleted} \\
-\;\; +100 & \text{when the drone reaches the goal}
++100 & \text{when the drone reaches the goal}
 \end{cases} $$
 
 **state transition:** The state transition is deterministic: actions deterministically produce the next state. If an action would result in an invalid position (for example, moving into an obstacle or outside the grid due to wind), the transition is considered invalid. The transition probabilities can be defined as follows:
