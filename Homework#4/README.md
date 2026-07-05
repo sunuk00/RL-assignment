@@ -1,9 +1,3 @@
-# Reinforcement Learning — HW4
-
-Deep Q-Network, REINFORCE, Actor-Critic을 재고관리(Inventory Control) 환경에 적용한 구현.
-
----
-
 ## 1. Deep Q-Network (DQN)
 
 ### 핵심 아이디어
