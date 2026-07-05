@@ -1,3 +1,9 @@
+# Reinforcement Learning — HW4
+
+Deep Q-Network, REINFORCE, Actor-Critic을 재고관리(Inventory Control) 환경에 적용한 구현.
+
+---
+
 ## 1. Deep Q-Network (DQN)
 
 ### 핵심 아이디어
@@ -7,7 +13,7 @@ Q-learning을 신경망으로 확장한 value-based method.
 
 ### Bellman Optimality Equation
 
-$$Q^*(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
+$$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 
 Q*가 이 방정식을 만족하면 최적 정책이다.
 
@@ -62,7 +68,7 @@ $$\theta \leftarrow \theta + \alpha \sum_t \nabla_\theta \log \pi_\theta(a_t \mi
 
 직관: $G_t$가 클수록(좋은 행동) 해당 행동의 확률을 높이고, $G_t$가 작을수록 확률을 낮춘다.
 
-### Baseline을 이용한 분산 감소
+### Baseline을 이용한 분산 감소 (Bonus)
 
 baseline $b_t$를 빼도 gradient의 기댓값은 변하지 않는다 (unbiasedness 유지):
 
