@@ -13,8 +13,6 @@ Q-learning을 신경망으로 확장한 value-based method.
 
 ### Bellman Optimality Equation
 
-$$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
-
 $$Q^* (s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 - $Q^{*}(s, a)$: 최적 Q값 (optimal action-value function)
 - $r$: 현재 상태에서 행동 $a$를 취했을 때 얻는 보상
@@ -33,6 +31,7 @@ $$y = r + \gamma \max_{a'} Q_{\theta^-}(s', a')$$
 ### Loss Function
 
 $$\mathcal{L}(\theta) = \mathbb{E}\left[\left(y - Q_\theta(s, a)\right)^2\right]$$
+
 
 ### 행동 선택 (ε-greedy)
 
@@ -60,6 +59,9 @@ Q값을 추정하는 대신 **policy $\pi_\theta$를 직접 파라미터화**하
 ### Policy Gradient Theorem
 
 $$\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}\left[\sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t \mid s_t) \cdot G_t\right]$$
+
+- $J(\theta)$: 정책 $\pi_\theta$의 기대 수익 (expected return)
+- $G_t$: 시간 $t$에서의 return (누적 할인 보상)
 
 ### Return (누적 할인 보상)
 
