@@ -15,7 +15,7 @@ Q-learning을 신경망으로 확장한 value-based method.
 
 $$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 
-$$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
+$$Q^{*}(s, a) = \mathbb{E} \left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 - $Q^{*}(s, a)$: 최적 Q값 (optimal action-value function)
 - $r$: 현재 상태에서 행동 $a$를 취했을 때 얻는 보상
 - $s'$: 현재 상태에서 행동 $a$를 취한 후 도달하는 다음 상태
