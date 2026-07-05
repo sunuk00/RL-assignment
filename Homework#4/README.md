@@ -15,6 +15,12 @@ Q-learning을 신경망으로 확장한 value-based method.
 
 $$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 
+$$Q^{*}(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
+- $Q^{*}(s, a)$: 최적 Q값 (optimal action-value function)
+- $r$: 현재 상태에서 행동 $a$를 취했을 때 얻는 보상
+- $s'$: 현재 상태에서 행동 $a$를 취한 후 도달하는 다음 상태
+- $\gamma$: 할인율 (discount factor), 미래 보상의 중요도를 결정
+
 Q*가 이 방정식을 만족하면 최적 정책이다.
 
 ### TD Target (학습 타깃)
@@ -68,7 +74,7 @@ $$\theta \leftarrow \theta + \alpha \sum_t \nabla_\theta \log \pi_\theta(a_t \mi
 
 직관: $G_t$가 클수록(좋은 행동) 해당 행동의 확률을 높이고, $G_t$가 작을수록 확률을 낮춘다.
 
-### Baseline을 이용한 분산 감소 (Bonus)
+### Baseline을 이용한 분산 감소
 
 baseline $b_t$를 빼도 gradient의 기댓값은 변하지 않는다 (unbiasedness 유지):
 
@@ -128,4 +134,4 @@ $$\phi \leftarrow \phi - \alpha_\text{critic} \cdot \nabla_\phi \left(r_t + \gam
 | 편향 (Bias) | 있음 | 없음 | 있음 |
 | 분산 (Variance) | 낮음 | 높음 | 중간 |
 | Exploration | ε-greedy | 확률적 샘플링 | 확률적 샘플링 |
-| 추가 구조 | Replay buffer, Target network | Baseline (선택) | Actor + Critic 두 네트워크 |
+| 추가 구조 | Replay buffer, Target network | Baseline | Actor + Critic 두 네트워크 |
