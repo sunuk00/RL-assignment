@@ -7,7 +7,7 @@ Q-learning을 신경망으로 확장한 value-based method.
 
 ### Bellman Optimality Equation
 
-$$Q^*(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^*(s', a') \mid s, a\right]$$
+$$Q^*(s, a) = \mathbb{E}\left[r + \gamma \max_{a'} Q^{*}(s', a') \mid s, a\right]$$
 
 Q*가 이 방정식을 만족하면 최적 정책이다.
 
